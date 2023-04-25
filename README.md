@@ -13,6 +13,10 @@ overlay-system [-v|--verbose] \
    But all changes to the disks from within, are not actually done
    to the real disks. Except for some directories that can be
    mounted 'rw'. When no command given, runs a bash shell interactively.
+   This is ideal for playing 'what-if' scenarios when installing linux 
+   system packages etc. Or investigating what changes are done onto the
+   system, by certain operations
+  
 
    Options:
      -v  show what is done
@@ -28,11 +32,11 @@ overlay-system [-v|--verbose] \
               /home/noud writable
 
 Example:
-   # run 'ls' on a bind-mounted /opt/screenpoint-torch.
+   # run 'ls' on a bind-mounted /opt/torch directory
    #          only /home/noud is 'really' writable...
    $ mkdir -p fake-torch; touch fake-torch/fake-torch.txt
-   $ overlay-system -ro fake-torch:/opt/screenpoint-torch -rw /home/noud \
-                    -- "ls /opt/screenpoint-torch/ > /home/noud/test.txt"
+   $ overlay-system -ro fake-torch:/opt/torch -rw /home/noudio \
+                    -- "ls /opt/torch > /home/noudio/test.txt"
    $ cat /home/noud/test.txt
    fake-torch.txt
 
