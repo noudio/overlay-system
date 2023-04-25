@@ -1,6 +1,6 @@
 
 Usage:
-
+```
 overlay-system [-v|--verbose] \
                [-p|--persistent <name>] \
                [-ro src[:dst] [src[:dst] ...]] \
@@ -30,15 +30,18 @@ overlay-system [-v|--verbose] \
         dst - Destination directory. it must pre-exist. When destination
               is empty, the same as 'src' is used. for example -rw /home/noud makes
               /home/noud writable
-
+```
 Example:
+```  
    # run 'ls' on a bind-mounted /opt/torch directory
-   #          only /home/noud is 'really' writable...
+   #          only /home/noudio is 'really' writable...
    $ mkdir -p fake-torch; touch fake-torch/fake-torch.txt
    $ overlay-system -ro fake-torch:/opt/torch -rw /home/noudio \
                     -- "ls /opt/torch > /home/noudio/test.txt"
    $ cat /home/noud/test.txt
    fake-torch.txt
-
+```
 To build the docker image overlay-mount:
+```  
    ./overlay-system-docker-build.sh
+```
