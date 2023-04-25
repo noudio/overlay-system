@@ -1,0 +1,81 @@
+#!/bin/bash
+set -e
+myDir=$(dirname $(realpath "$0"))
+myName=$(basename "$0")
+#-------------------
+function Usage () {
+   cat 1>&2 <<HERE
+
+Usage:
+
+$myName \\
+        [-v --verbose] \\
+        [-p --persistent  volume-name] \\
+        [-ro --mount-ro src:dst [src:dst ...]] \\
+        [-rw --mount-rw src:dst [src:dst ...]] \\
+        [--] [command [args ...]]
+
+   Runs command within a 'transparent docker container' where
+   "src" is bind mounted to "dst"
+   When no command given, runs a bash shell interactively.
+
+Example:
+   # run 'ls' on a bind-mounted /opt/screenpoint-torch.
+   $ mkdir -p fake-torch; touch fake-torch/fake-torch
+   $ overlay-mount fake-torch /opt/screenpoint-torch ls /opt/screenpoint-torch/
+   fake-torch
+
+HERE
+   exit 1
+}
+trap Usage EXIT
+
+persistentVolume=
+
+# scan options before run
+remainingOptions=()
+disabledScan=
+
+function scan-options () {
+   while [ -n "$1" ]; do
+
+      case "$1" in
+         --)
+           disabledScan=1
+           ;;
+         -p | --persistent)
+           if [ -z "$disabledScan" ]; then
+               persistentVolume="-v overlay-system-vol-$2:/mount-magic/overlay"
+               shift 2 # shift to argument
+               continue
+           fi
+      esac
+      remainingOptions+=("$1")
+      shift
+   done
+}
+
+scan-options "$@"
+trap '' EXIT
+
+# -------------------------------------
+# build docker image if it doesnt exist
+if ! docker inspect --type=image overlay-system > /dev/null 2>&1
+then
+    echo "$myName: building overlay-system docker image"
+    $myDir/overlay-system-docker-build.sh
+fi
+
+# -----------------------------------------------------------------------
+# run as user in cwd We could turn over maybe more, like the set, and env
+# (note that the / mount is a recursive mount (containing all submounts)
+
+docker run --rm -ti --privileged --cap-add=ALL \
+           $persistentVolume \
+           -v /:/mount-magic/root-org \
+           --network host \
+           overlay-system \
+           "$USER" "$(pwd)" "${remainingOptions[@]}"
+
+# "$@"
+exit $?
