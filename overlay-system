@@ -21,9 +21,9 @@ $myName \\
 
 Example:
    # run 'ls' on a bind-mounted /opt/torch.
-   $ mkdir -p fake-torch; touch fake-torch/fake-torch
+   $ mkdir -p fake-torch; touch fake-torch/fake-torch.txt
    $ overlay-mount fake-torch /opt/torch ls /opt/torch/
-   fake-torch
+   fake-torch.txt
 
 HERE
    exit 1
