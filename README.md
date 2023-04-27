@@ -20,7 +20,7 @@ overlay-system [-v|--verbose] \
 
    Options:
      -v  show what is done
-     -p  use persistent volume <name> for all changes to the system
+     -p  use persistent reusable volume <name> for all overlay changes to the system
      -ro 'mnt-specs' Read only mount something alternative on top of an existing directory.
      -rw 'mnt-specs' Is the only way to get something out of the overlay-system.
      --  Stop commandline parsing, all arguments are the command line
@@ -28,8 +28,8 @@ overlay-system [-v|--verbose] \
      'mnt-specs' are of the form src[:dst]
         src - Source directory within /
         dst - Destination directory. it must pre-exist. When destination
-              is empty, the same as 'src' is used. for example -rw /home/noud makes
-              /home/noud writable
+              is empty, the same as 'src' is used. for example -rw /home/noudio makes
+              /home/noudio writable
 ```
 Example:
 ```  
