@@ -35,11 +35,11 @@ Example:
 ```  
    # run 'ls' on a bind-mounted /opt/torch directory
    #          only /home/noudio is 'really' writable...
-   $ mkdir -p fake-torch; touch fake-torch/fake-torch.txt
-   $ overlay-system -ro fake-torch:/opt/torch -rw /home/noudio \
-                    -- "ls /opt/torch > /home/noudio/test.txt"
+   $ mkdir -p fake-libc; touch fake-libc/fake-libc.txt
+   $ overlay-system -ro fake-libc:/opt/libc -rw /home/noudio \
+                    -- "ls /opt/libc > /home/noudio/test.txt"
    $ cat /home/noud/test.txt
-   fake-torch.txt
+   fake-libc.txt
 ```
 To build the docker image overlay-mount:
 ```  
