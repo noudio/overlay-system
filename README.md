@@ -33,7 +33,7 @@ overlay-system [-v|--verbose] \
 ```
 Example:
 ```  
-   # run 'ls' on a bind-mounted /opt/torch directory
+   # run 'ls' on a bind-mounted /opt/libc directory
    #          only /home/noudio is 'really' writable...
    $ mkdir -p fake-libc; touch fake-libc/fake-libc.txt
    $ overlay-system -ro fake-libc:/opt/libc -rw /home/noudio \
